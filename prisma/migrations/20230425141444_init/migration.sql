@@ -22,4 +22,3 @@ CREATE UNIQUE INDEX "constraint_name" ON "UrlRedirects"("redirect");
 
 -- AddForeignKey
 ALTER TABLE "Visit" ADD CONSTRAINT "Visit_urlId_fkey" FOREIGN KEY ("urlId") REFERENCES "UrlRedirects"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
