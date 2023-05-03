@@ -1,26 +1,34 @@
 import Head from "next/head";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Link from "next/link";
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   return (
     <>
       <Head>
         <title>URL Shortener</title>
       </Head>
       <main>
-        <h1>URL Shortener</h1>
-        <div>
-          {!session && (
+        <nav>
+          <Link href="/">Home</Link>
+          {session ? (
             <>
-              Not signed in <br />
+              <Link href="/url-redirect">New Redirect</Link>
+              <Link href="/list">List</Link>
+              <button onClick={() => signOut()}>Sign out</button>
+            </>
+          ) : (
+            <>
               <button onClick={() => signIn()}>Sign in</button>
             </>
           )}
+        </nav>
+        <h1>URL Shortener</h1>
+        <div>
           {session && (
             <>
               Signed in as {session.user.email} <br />
-              <button onClick={() => signOut()}>Sign out</button>
             </>
           )}
         </div>
