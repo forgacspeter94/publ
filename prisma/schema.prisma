@@ -20,5 +20,6 @@ model UrlRedirects {
 model Visit {
   id           String       @id @default(uuid())
   urlId        String
+  createdAt    DateTime     @default(now())
   UrlRedirects UrlRedirects @relation(fields: [urlId], references: [id], onDelete: Cascade)
 }
