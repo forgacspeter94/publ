@@ -1,0 +1,27 @@
+.nav{
+    padding: 12px 6px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: deepskyblue;
+}
+
+.button{
+        padding: 6 3;
+        border-radius: 25%;
+
+ }
+
+ .buttonSignIn{
+        background-color: green;
+ }
+ 
+ .buttonSignOut{
+    background-color: red;
+}
+
+.navList{
+    display: flex;
+    gap: 8px;
+} 
