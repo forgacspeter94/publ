@@ -64,3 +64,38 @@ export async function getUrlDetails(redirectId) {
 
   return data;
 }
+
+export async function getUrlVisits(redirectId, from, to, interval) {
+  if (interval === "day") {
+    return await getDailyUrlVisits(redirectId, from, to);
+  } else if (interval === "hour") {
+    return await getHourlyUrlVisits(redirectId, from, to);
+  }
+}
+
+async function getDailyUrlVisits(redirectId, from, to) {
+  const visits =
+    await prisma.$queryRaw`SELECT COUNT(id) as count, "urlId", DATE_TRUNC('day', "createdAt") as day FROM "Visit" WHERE "urlId" = ${redirectId} AND "createdAt" BETWEEN ${from} AND ${to} GROUP BY "urlId", day ORDER BY day ASC `;
+
+  const visitCounts = visits.map((visit) => {
+    return {
+      time: visit.day.toISOString().split("T")[0],
+      count: Number(visit.count),
+    };
+  });
+
+  return visitCounts;
+}
+
+async function getHourlyUrlVisits(redirectId, from, to) {
+  const visits =
+    await prisma.$queryRaw`SELECT COUNT(id) as count, "urlId", DATE_TRUNC('hour', "createdAt") as hour FROM "Visit" WHERE "urlId" = ${redirectId} AND "createdAt" BETWEEN ${from} AND ${to} GROUP BY "urlId", hour ORDER BY hour ASC `;
+
+  const visitCounts = visits.map((visit) => {
+    return {
+      time: visit.hour.toISOString(),
+      count: Number(visit.count),
+    };
+  });
+  return visitCounts;
+}
